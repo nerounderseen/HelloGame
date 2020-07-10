@@ -19,12 +19,21 @@ namespace HelloGame
         private Canvas2DContext _context;
         protected BECanvasComponent _canvasReference;
         protected ElementReference ashRef;
-        protected override async Task OnAfterRenderAsync(bool f)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            this._context = await this._canvasReference.CreateCanvas2DAsync();
-            await this._context.SetFillStyleAsync("cornflowerblue");
-            await this._context.FillRectAsync(0, 0, 1024, 768);
-            await this._context.DrawImageAsync(ashRef, (currentFrame - 1) * 64, yCor, 64, 64, AD, WS, 64, 64);
+            if (firstRender)
+            {
+                this._context = await this._canvasReference.CreateCanvas2DAsync();
+                await this._context.SetFillStyleAsync("cornflowerblue");
+                await this._context.FillRectAsync(0, 0, 1024, 768);
+                await this._context.DrawImageAsync(ashRef, (currentFrame - 1) * 64, yCor, 64, 64, AD, WS, 64, 64);
+            }
+            else
+            {
+                await this._context.SetFillStyleAsync("cornflowerblue");
+                await this._context.FillRectAsync(0, 0, 1024, 768);
+                await this._context.DrawImageAsync(ashRef, (currentFrame - 1) * 64, yCor, 64, 64, AD, WS, 64, 64);
+            }
         }
 
         protected void OnKeypress(KeyboardEventArgs e)
