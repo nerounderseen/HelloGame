@@ -26,10 +26,11 @@ namespace HelloGame
                 this._context = await this._canvasReference.CreateCanvas2DAsync();
                 await this._context.SetFillStyleAsync("cornflowerblue");
                 await this._context.FillRectAsync(0, 0, 1024, 768);
-                await this._context.DrawImageAsync(ashRef, (currentFrame - 1) * 64, yCor, 64, 64, AD, WS, 64, 64);
+                await this._context.DrawImageAsync(ashRef, 0, 0, 64, 64, 0, 0, 64, 64);
             }
             else
             {
+                await Task.Delay(17);
                 await this._context.SetFillStyleAsync("cornflowerblue");
                 await this._context.FillRectAsync(0, 0, 1024, 768);
                 await this._context.DrawImageAsync(ashRef, (currentFrame - 1) * 64, yCor, 64, 64, AD, WS, 64, 64);
