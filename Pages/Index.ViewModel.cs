@@ -7,38 +7,63 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace HelloGame
 {
-    public class IndexViewModel: ComponentBase
+    public class IndexViewModel : ComponentBase
     {
-        private Canvas2DContext _context;
 
+        int maxFrames = 4;
+        int currentFrame = 1;
+        int AD = 0;
+        int WS = 0;
+        int yCor;
+
+        private Canvas2DContext _context;
         protected BECanvasComponent _canvasReference;
         protected ElementReference ashRef;
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool f)
         {
-            if(firstRender)
-            {
-                this._context = await this._canvasReference.CreateCanvas2DAsync();
-                int maxFrames = 4;
-                int currentFrame = 1;
-                int y = 0;
-                while(true)
-                {
-                    await Task.Delay(100);
-                    await this._context.SetFillStyleAsync("cornflowerblue");
-                    await this._context.FillRectAsync(0, 0, 1024, 768);
-                    await this._context.DrawImageAsync(ashRef, (currentFrame - 1) * 64, 0, 64, 64, 0, y, 64, 64);
-                    currentFrame++;
-                    y++;
-                    if(currentFrame > maxFrames)
-                        currentFrame = 1;
-                }
-            }
+            this._context = await this._canvasReference.CreateCanvas2DAsync();
+            await this._context.SetFillStyleAsync("cornflowerblue");
+            await this._context.FillRectAsync(0, 0, 1024, 768);
+            await this._context.DrawImageAsync(ashRef, (currentFrame - 1) * 64, yCor, 64, 64, AD, WS, 64, 64);
         }
 
         protected void OnKeypress(KeyboardEventArgs e)
         {
-            Console.WriteLine(e.Code);
+            switch (e.Key.ToLower())
+            {
+                //Move Up
+                case "w":
+                    yCor = 192;
+                    currentFrame++;
+                    if (currentFrame > maxFrames)
+                        currentFrame = 1;
+                    WS -= 5;
+                    break;
+                //Move Down
+                case "s":
+                    yCor = 0;
+                    currentFrame++;
+                    if (currentFrame > maxFrames)
+                        currentFrame = 1;
+                    WS += 5;
+                    break;
+                //Move Left
+                case "a":
+                    yCor = 64;
+                    currentFrame++;
+                    if (currentFrame > maxFrames)
+                        currentFrame = 1;
+                    AD -= 5;
+                    break;
+                //Move Right
+                case "d":
+                    yCor = 128;
+                    currentFrame++;
+                    if (currentFrame > maxFrames)
+                        currentFrame = 1;
+                    AD += 5;
+                    break;
+            }
         }
     }
 }
